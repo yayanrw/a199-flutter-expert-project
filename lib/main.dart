@@ -1,6 +1,8 @@
 import 'package:ditonton/common/constants.dart';
+import 'package:ditonton/common/drawer_item_enum.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
+import 'package:ditonton/presentation/pages/home_page.dart';
 import 'package:ditonton/presentation/pages/home_tv_page.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/pages/home_movie_page.dart';
@@ -33,49 +35,80 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<MovieListNotifier>(),
         ),
         ChangeNotifierProvider(
+          create: (_) => di.locator<TVShowListNotifier>(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => di.locator<MovieDetailNotifier>(),
         ),
         ChangeNotifierProvider(
-          create: (_) => di.locator<MovieSearchNotifier>(),
+          create: (_) => di.locator<TVShowDetailNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<SearchNotifier>(),
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<TopRatedMoviesNotifier>(),
         ),
         ChangeNotifierProvider(
+          create: (_) => di.locator<TopRatedTVShowsNotifier>(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => di.locator<PopularMoviesNotifier>(),
         ),
         ChangeNotifierProvider(
+          create: (_) => di.locator<PopularTVShowsNotifier>(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => di.locator<WatchlistMovieNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<WatchlistTVShowNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<HomeNotifier>(),
         ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData.dark().copyWith(
-          colorScheme: kColorScheme,
           primaryColor: kRichBlack,
           scaffoldBackgroundColor: kRichBlack,
           textTheme: kTextTheme,
+          colorScheme: kColorScheme.copyWith(secondary: kMikadoYellow),
         ),
-        home: HomeMoviePage(),
+        home: HomePage(),
         navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
-            case HomeMoviePage.ROUTE_NAME:
-              return MaterialPageRoute(builder: (_) => HomeMoviePage());
-            case HomeTvPage.ROUTE_NAME:
-              return MaterialPageRoute(builder: (_) => HomeTvPage());
+            case HomePage.ROUTE_NAME:
+              return MaterialPageRoute(builder: (_) => HomePage());
             case PopularMoviesPage.ROUTE_NAME:
               return CupertinoPageRoute(builder: (_) => PopularMoviesPage());
+            case PopularTVShowsPage.ROUTE_NAME:
+              return CupertinoPageRoute(builder: (_) => PopularTVShowsPage());
             case TopRatedMoviesPage.ROUTE_NAME:
               return CupertinoPageRoute(builder: (_) => TopRatedMoviesPage());
+            case TopRatedTVShowsPage.ROUTE_NAME:
+              return CupertinoPageRoute(builder: (_) => TopRatedTVShowsPage());
             case MovieDetailPage.ROUTE_NAME:
               final id = settings.arguments as int;
               return MaterialPageRoute(
                 builder: (_) => MovieDetailPage(id: id),
                 settings: settings,
               );
+            case TVShowDetailPage.ROUTE_NAME:
+              final id = settings.arguments as int;
+              return MaterialPageRoute(
+                builder: (_) => TVShowDetailPage(id: id),
+                settings: settings,
+              );
             case SearchPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => SearchPage());
+              final activeDrawerItem = settings.arguments as DrawerItem;
+              return CupertinoPageRoute(
+                builder: (_) => SearchPage(
+                  activeDrawerItem: activeDrawerItem,
+                ),
+              );
             case WatchlistPage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => WatchlistPage());
             case AboutPage.ROUTE_NAME:

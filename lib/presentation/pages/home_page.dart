@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-  static const ROUT_NAME = '/home';
+  static const ROUTE_NAME = '/home';
 
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
